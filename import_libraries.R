@@ -7,3 +7,5 @@ options(na.action = na.warn)
 library(nycflights13)
 
 library(lubridate)
+
+package(hexbin)
