@@ -8,4 +8,4 @@ library(nycflights13)
 
 library(lubridate)
 
-package(hexbin)
+library(hexbin)
