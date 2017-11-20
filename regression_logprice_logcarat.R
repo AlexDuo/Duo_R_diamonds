@@ -47,8 +47,8 @@ predicted_price <- mutate(diamonds2, predicted = predict(mod_diamond, diamonds2)
 
 
 ggplot(data = predicted_price)+
-geom_smooth(mapping = aes(x = lcarat, y = lprice))+ 
-geom_smooth(mapping = aes(x = lcarat, y = predicted, color="red"))
+geom_line(mapping = aes(x = lcarat, y = lprice))+ 
+geom_line(mapping = aes(x = lcarat, y = predicted, color="red"))
 
 
 ggsave("final.pdf")
