@@ -93,17 +93,17 @@ ggsave("model4predictedvstrue.jpg")
 # exercises starts----------------------------------------------------------------------------
 # create wdayterms
 daily <- daily %>%
-  mutate(wday = 
+  mutate(wdaywithterms = 
            case_when(.$wday == "Sat" & .$term == "summer" ~ "Sat-summer",
                      .$wday == "Sat" & .$ term == "fall" ~ "Sat-fall",
                      .$wday == "Sat" & .$term == "spring" ~ "Sat-spring",
                      TRUE ~ as.character(.$wday)))
 # fit a new modle
-modwdayterms <- lm(n ~ wday, data = daily)
+modwdayterms <- lm(n ~ wdaywithterms, data = daily)
 
 # every combination of wday is mod2 which is wday*term
 daily %>% 
-  gather_residuals(onlysatterm = modwdayterms, allcombination = mod2) %>% 
+  gather_residuals(onlysatterms = modwdayterms, allcombination = mod2) %>% 
   ggplot(aes(date, resid, colour = model)) +
   geom_line(alpha = 0.75)
 
