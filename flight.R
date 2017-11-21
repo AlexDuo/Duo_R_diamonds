@@ -91,7 +91,7 @@ ggsave("model4predictedvstrue.jpg")
 
 
 # exercises starts----------------------------------------------------------------------------
-# create wdayterms
+# create column wdaywithterms
 daily <- daily %>%
   mutate(wdaywithterms = 
            case_when(.$wday == "Sat" & .$term == "summer" ~ "Sat-summer",
@@ -109,3 +109,34 @@ daily %>%
 
 ggsave("modwdaytermvsmod2.jpg")
 
+
+
+# create column holidayandtermsat
+daily <- daily %>%
+  mutate(holidayandtermsat = 
+           case_when(
+             .$date %in% lubridate::ymd(c(20130101,
+                                          20130704, 
+                                          20131031, 
+                                          20131128,
+                                          20131224,
+                                          20131225)) ~
+               "holiday",
+             .$wday == "Sat" & .$term == "summer" ~ "Sat-summer",
+             .$wday == "Sat" & .$ term == "fall" ~ "Sat-fall",
+             .$wday == "Sat" & .$term == "spring" ~ "Sat-spring",
+             TRUE ~ as.character(.$wday)))
+
+# fit the new model
+
+modholidaytermsat <- lm(n ~ holidayandtermsat, data = daily)
+
+# plot the residual vs date
+
+daily %>% 
+  add_residuals(modholidaytermsat, "resid") %>% 
+  ggplot(aes(date, resid)) + 
+  geom_hline(yintercept = 0, size = 2, colour = "white") + 
+  geom_line()
+
+ggsave("modholidaytermsat.jpg")
