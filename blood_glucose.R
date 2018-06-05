@@ -26,12 +26,20 @@ mutate(glucose, hour_of_day = hour(glucose$timestamp))
 glucose <- mutate(glucose, hour_of_day = as.factor(hour(glucose$timestamp)))
 glucose <- mutate(glucose, period_of_day = cut_interval(hour(glucose$timestamp), length=4))
 model_3 <- lm(blood_glucose ~ prior_activity + timestamp + period_of_day, data=glucose)
+
 predicted_glucose <- mutate(glucose, predicted = predict(model_3, glucose))
-  ggplot(data = predicted_glucose) + geom_path(mapping = aes(x = timestamp, y = blood_glucose))
-  + geom_path(mapping = aes(x = timestamp, y = predicted, color="red"))
+  ggplot(data = predicted_glucose) + geom_path(mapping = aes(x = timestamp, y = blood_glucose))+
+  geom_path(mapping = aes(x = timestamp, y = predicted, color="red"))
 ggsave("timevsbloodglucose.jpg")
+
 ggplot(data = predicted_glucose) + 
   geom_point(mapping = aes(x = blood_glucose, y = predicted)) + 
   geom_path(x = seq(from = 0, to = 400, length = nrow(predicted_glucose)), y = seq(from = 0, to = 400, length = nrow(predicted_glucose)))
 ggsave("predictedvstrueglucose.jpg")
+
+
+ggplot(data = predicted_glucose) + 
+  geom_smooth(mapping = aes(x = blood_glucose, y = predicted))
+ggsave("smoothpredictedvstrueglucose.jpg")
+ 
 
