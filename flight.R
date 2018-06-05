@@ -98,4 +98,4 @@ daily <- daily %>%
                      .$wday == "Sat" & .$term == "spring" ~ "Sat-spring",
                      TRUE ~ as.character(.$wday)))
 # fit a new modle
-modwdayterms <- lm(n ~ wday2, data = daily)
+modwdayterms <- lm(n ~ wdayterms, data = daily)
